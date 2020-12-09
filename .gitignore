@@ -1,0 +1,13 @@
+.idea
+node_modules
+
+__init__
+__pycache__
+
+*.sqlite3
+*.bat
+*.json
+
+CACHE
+cache
+migrations

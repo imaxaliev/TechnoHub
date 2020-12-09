@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends 'store/base.html' %}
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+        <ul class="checkout__order-info">
+            {% for field in order %}
+                <li>
+                    <ul>
+                        {% if field.label == 'Products' %}
+                            <li>{{ field.label }}:</li>
+                            {% for product in order.instance.products.all %}
+                                {% for detail in order.instance.productorderdetail_set.all %}
+                                    {% if detail.product.id == product.id %}
+                                        <li>{{ forloop.counter }}. {{ product.title }} x{{ detail.amount }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+{#                        {% elif field.label == 'Buyer' %}#}
+{#                            <li>{{ field.label }}:</li>#}
+{#                            {% if field.value == None %}#}
+{#                                <li>Anonymous</li>#}
+{#                            {% else %}#}
+{#                                <li>{{ order.instance.buyer }}</li>#}
+{#                            {% endif %}#}
+                        {% else %}
+                        <li>{{ field.label }}:</li>
+                        <li>{{ field.value }}</li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
+            <form method="post" class="order-info__form checkout-form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden.errors }}
+                    {{ hidden.label_tag }}
+                {% endfor %}
+
+                <table class="checkout-form__fields">
+                    {% for field in form.visible_fields %}
+                        <tr>
+                            <th>
+                                {{ field.label_tag }}
+                            </th>
+                            <td>
+                                {{ field.errors }}
+                                {{ field }}
+                                {{ field.help_text }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <button
+                    class="checkout-form__submit btn waves-effect waves-light"
+                    data-order-id="{{ order.instance.id }}"
+                >
+                    Confirm order
+                </button>
+            </form>
+        </ul>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends 'registration/index.html' %}
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+        <div class="auth-container reg-container">
+            <h2>Registration form</h2>
+
+            <div class="form-error">
+                {{ form.non_field_errors }}
+            </div>
+            <form action="{% url 'register' %}" method="post" class="auth-container__form">
+                {% csrf_token %}
+                <table class="form__fields">
+                    {% for field in form.hidden_fields %}
+                        {{ field }}
+                        {{ field.errors }}
+                    {% endfor %}
+
+                    {% for field in form.visible_fields %}
+                        <tr>
+                            <th>
+                                {{ field.label_tag }}
+                            </th>
+                            <td>
+                                <div class="error">
+                                     {{ field.errors }}
+                                </div>
+                                {{ field }}
+                                {{ field.help_text }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="auth-container__button text-align-r">
+                    <input
+                        class="btn"
+                        type="submit"
+                        value="Register"
+                    >
+                </div>
+            </form>
+            <div class="auth-container__nav">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-dec-n">Go to login</a>
+            </div>
+        </div>
+    {% endblock %}
+</body>
+</html>

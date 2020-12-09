@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends 'store/base.html' %}
+    <title>Title</title>
+</head>
+<body>
+    {% block content  %}
+        <ul>
+            {% for cat in categories %}
+                <li><a href="{% url 'store:category' cat.hierarchy %}">{{ cat.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+</body>
+</html>

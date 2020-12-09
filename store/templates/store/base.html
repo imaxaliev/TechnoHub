@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}<title>Tech store</title>{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% load static compress %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/less" href="{% static 'store/styles/base.less' %}">
+    {% endcompress %}
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <div class="nav-wrapper">
+                <a
+                    href="{% url 'store:home' %}"
+                    class="nav__logo"
+                >
+                    TechnoHub
+                </a>
+                <a
+                    href="#"
+                    class="sidenav-trigger"
+                    data-target="mobile-demo"
+                >
+                    <i class="material-icons">menu</i>
+                </a>
+                <ul class="hide-on-med-and-down nav__menu">
+                    <li><a href="{% url 'store:categories' %}">Categories</a></li>
+                </ul>
+                <form
+                    class="form nav__search-form"
+                >
+                    <div class="input-field">
+                        <input
+                            type="search"
+                            name="q"
+                            id="q"
+                        >
+                        <label
+                            for="q"
+                            class="label-icon"
+                        >
+                            <i class="material-icons nav__i">search</i>
+                        </label>
+                        <i class="material-icons nav__i">close</i>
+                    </div>
+                </form>
+                <i class="material-icons cart-toggle nav__i">shopping_cart</i>
+                {% if user.is_authenticated %}
+                    <a
+                        href="{% url 'logout' %}"
+                    >
+                        Logout
+                    </a>
+                {% else %}
+                    <a
+                        href="{% url 'login' %}?next={{ request.path }}"
+                    >
+                        Login
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">Products</a></li>
+        </ul>
+    </header>
+    <main class="content-wrap">
+        <div class="content-wrap__cart cart">
+            <div class="cart__container text-align-c">
+                <i class="material-icons cart__close cart-toggle">close</i>
+                {% if actual_order.products.all|length %}
+                <h4 class="cart__heading">
+{#                    {% with product_order_amount=0 %}#}
+{#                    {% for product in actual_order.products.all %}#}
+{#                        {{ product_order_amount|add:product.product_order_detail.amount }}#}
+{#                    {% endfor %}#}
+{#                    {% widthratio actual_order.products.all|length 1 product_order_amount %} product(s) in cart.#}
+{#                    {% endwith %}#}
+                    Cart
+                </h4>
+                <ul class="cart__details">
+                {% for product in actual_order.products.all %}
+                    <li>
+                        <ul>
+                            <li><h6>{{ product.title|capfirst }}</h6></li>
+                            {% for detail in product.productorderdetail_set.all %}
+                                {% if detail.order.id == actual_order.id %}
+                                    <li id="cartProduct{{ product.id }}Amount">
+                                        &nbsp;x{{ detail.amount }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% for detail in product.productorderdetail_set.all %}
+                                {% if detail.order.id == actual_order.id %}
+                                    <li id="cartProduct{{ product.id }}Price">
+                                        = {{ detail.total_price }} RUB
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                    <li class="order-detail__total-price">
+                        <ul>
+                            <li><h6>Total price:</h6></li>
+                            <li id="cartTotalPrice">{{ actual_order.total_price }} RUB</li>
+                        </ul>
+                    </li>
+                </ul>
+                    <div class="checkout-link">
+                        <a
+                            href="{% url 'store:checkout' actual_order.id %}"
+                            class="checkout-link"
+                        >
+                            Go to Checkout
+                        </a>
+                    </div>
+                    {% if actual_order.products.all %}
+                        <a
+                            href="{% url 'store:order_deletion' actual_order.id %}?next={{ request.path }}"
+                            class="deletion-link"
+                        >
+                            Decline order
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <p><strong>Cart is empty.</strong></p>
+                {% endif %}
+            </div>
+        </div>
+    {% block content %}
+    {% endblock %}
+    </main>
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col 16 s12">
+                    <h5>Footer</h5>
+                    <p class="grey-text text-lighten-4">...</p>
+                </div>
+                <div class="col 14 offset-12 s12">
+                    <h5>Links</h5>
+                    <ul>
+                        <li><a href="" class="grey-text text-lighten-3">Link</a></li>
+                        <li><a href="" class="grey-text text-lighten-3">Link</a></li>
+                        <li><a href="" class="grey-text text-lighten-3">Link</a></li>
+                        <li><a href="" class="grey-text text-lighten-3">Link</a></li>
+                        <li><a href="" class="grey-text text-lighten-3">Link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                .
+                <a href="" class="grey-text text-lighten-3 right">@</a>
+            </div>
+        </div>
+    </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="module" src="{% static 'store/scripts/main.js' %}"></script>
+</body>
+</html>

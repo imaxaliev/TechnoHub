@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+{% extends 'store/base.html' %}
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="main-container">
+        <h2>Hi!</h2>
+        <blockquote class="blockquote_blue">
+            I'm Max Aliev, fullstack Python/JS developer.
+        </blockquote>
+        <blockquote class="blockquote_blue">
+            And this is my ecommerce-site <strong>TechnoHub</strong> which is now under construction.
+        </blockquote>
+        <blockquote class="blockquote_blue">
+            Now there is just a few categories and almost everything not prepared for production.
+        </blockquote>
+        <blockquote class="blockquote_blue">
+            So, the main purpose of this project is to develop my skills on real-life and relatively large project and maybe show something on interview.
+        </blockquote>
+        <img src="/uploads/etc/i_can_learn_python.jpg" alt="Python==Excel">
+    </div>
+{% endblock %}
+</body>
+</html>

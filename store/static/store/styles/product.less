@@ -1,0 +1,252 @@
+.product-set__columns {
+  display: flex;
+  justify-content: center;
+}
+
+.columns__col {
+  display: flex;
+
+  &.product-col {
+    flex-direction: column;
+  }
+
+  .col__container {
+    display: flex;
+    align-items: flex-end;
+    border-radius: 20px;
+    padding: 20px;
+    min-width: 500px;
+
+    &:not(.card_single) {
+      margin-right: 40px;
+    }
+
+    .card__card-left {
+      align-self: flex-start;
+
+      > h4 {
+        color: @grey;
+      }
+
+      .card__name {
+        display: inline-block;
+        color: @blue;
+      }
+
+      .thumbnail__main, .thumbnail__rest {
+        margin: 0 0 20px 20px;
+      }
+
+    }
+
+    .card__card-right {
+      flex: 1 0 auto;
+      text-align: right;
+
+      .card__add-to-cart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .input-field {
+          .add-to-cart__product-amount {
+          }
+      }
+
+      }
+
+
+      > ul {
+
+        li, h6 {
+          font-size: .8rem;
+        }
+
+        > li {
+          display: inline-block;
+          vertical-align: top;
+          font-weight: 600;
+
+          > ul {
+            margin-left: 1.25rem;
+
+            h5 {
+              color: @grey;
+            }
+
+            li, h5 {
+              display: inline-block;
+              border-bottom: 1px solid transparent;
+              transition: all ease-in 1.25s;
+
+              &:hover {
+                border-bottom-color: @blue;
+              }
+            }
+            h5:hover {
+              border-bottom-width: 2px;
+            }
+
+            li, h6 {
+              font-size: 1rem;
+            }
+
+            h6 {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.product-wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__breadcrumbs {
+    font-size: 0;
+
+    li {
+      display: inline;
+      position: relative;
+      font-size: 1rem;
+
+      &:not(:last-child) {
+        margin-right: 15px;
+
+        &:after {
+            display: block;
+            position: absolute;
+            top: -3px;
+            right: -10px;
+            content: '/';
+        }
+      }
+    }
+  }
+
+  &__columns {
+    //display: flex;
+    //justify-content: space-around;
+  }
+
+  .button-list-wrapper {
+    //text-align: left;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+
+    .toggle-tab-data {
+      //margin-left: 20px;
+    }
+  }
+}
+
+.tab-data {
+
+  >* {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+
+    &.review-list {
+
+      .modal {
+        width: 50%;
+
+        &__heading {
+          margin-bottom: 30px;
+        }
+
+        &__form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .review-form__fields-wrap {
+            margin-bottom: 20px;
+
+            &:nth-last-child(2) {
+              margin-bottom: 30px;
+            }
+
+              .fields-wrap__field-lbl {
+                color: #000;
+                font-size: 14px;
+                font-weight: 600;
+              }
+            
+             .choices-list {
+               display: flex;
+               flex-direction: column;
+               align-items: flex-start;
+
+               &__choice {
+               }
+            }
+          }
+        }
+        
+      }
+      
+      .review {
+        padding: 10px;
+        border-bottom: 1px solid @grey;
+        text-align: left;
+
+      .review__container {
+
+        .review__details {
+          display: flex;
+          justify-content: stretch;
+          margin-bottom: 20px;
+
+          .review__author {
+            flex-basis: 100px;
+            font-weight: 600;
+          }
+
+          .review__rate {
+          }
+        }
+
+        .review__text {
+          padding-left: 20px;
+        }
+      }
+    }
+  }
+
+    &.card__params-wrap {
+      text-align: center;
+
+      .card__product-params {
+        text-align: left;
+
+        .product-params__add-to-cart {
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+      }
+
+        h5 {
+          margin-left: 1.25rem;
+        }
+
+        > li {
+          margin-right: 20px;
+        }
+      }
+
+    }
+
+  }
+
+}

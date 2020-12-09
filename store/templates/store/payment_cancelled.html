@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends 'store/base.html' %}
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+        <div class="text-align-c">
+            <h4>Payment for order <strong>E-{{ order.id }}</strong> has been cancelled.</h4>
+            <p>Would you like to try to proceed again?</p>
+            <a
+                href="{% url 'store:checkout' order.id %}"
+                class="btn waves-effect waves-light"
+            >
+                Checkout
+            </a>
+            <p>Or do you wish to decline order?</p>
+            <a
+                href="{% url 'store:order_deletion' order.id %}"
+                class="btn waves-effect waves-light"
+            >
+                Cancel order
+            </a>
+        </div>
+    {% endblock %}
+</body>
+</html>

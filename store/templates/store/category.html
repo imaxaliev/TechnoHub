@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+{% extends 'store/base.html' %}
+{% load thumbnail store_extras %}
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    {% if sub_categories|length %}
+        <div class="category-wrap__sub-categories">
+            <ul>
+                <h5>Category list</h5>
+                {% for category in sub_categories %}
+                    <li><a href="{{ category.slug }}/">
+                        {{ category.title }}
+                    </a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if product_set|length %}
+        <div class="category-wrap__product-set">
+            <h3>Product list</h3>
+            <div class="product-set__columns columns">
+            {% for product in product_set %}
+                <div class="columns__col col">
+                    <div class="col__container card">
+                        <div class="card__card-left">
+                            <a href="{{ product.slug }}" class="card__name">
+                                <h4>{{ product.title|capfirst }}</h4>
+                            </a>
+                            <div class="card__thumbnail thumbnail">
+                            {% with img=product.productimage_set.all|default_img %}
+                            {% thumbnail img.image '250' crop='center' as im %}
+                                <div class="thumbnail__main">
+                                    <img src="{{ im.url }}"
+                                         width="{{ im.x }}"
+                                         height="{{ im.y }}"
+                                         alt="{{ product.slug }}"
+                                    >
+                                </div>
+                            {% endthumbnail %}
+                            {% endwith %}
+                            </div>
+                        </div>
+                        <div class="card__card-right">
+                            <ul class="card__param">
+                            {% for field, value in product.params.base_params %}
+                                <li>{{ field|capfirst }}:</li>
+                                <h6>{{ value }}</h6>
+                            {% endfor %}
+                            </ul>
+                            <div class="card__add-to-cart add-to-cart" id="addProduct{{ product.id }}ToCart">
+                                {% if product.total_amount == 0 %}
+                                    <p class="out-of-stock">Out of stock.</p>
+                                {% else %}
+{#                                    <form action="{% url 'store:add_to_cart' product.id %}"></form>#}
+                                    <div class="input-field">
+                                        <input
+                                            type="number"
+                                            id="product{{ product.id }}Amount"
+                                            class="add-to-cart__product-amount"
+                                            value="1"
+                                            min="1"
+                                            max="{{ product.total_amount }}"
+                                        >
+                                    </div>
+                                    <button
+                                        class="add-to-cart__btn btn waves-effect waves-light"
+                                        data-product-id="{{ product.id }}"
+                                        data-order-id="{{ actual_order.id }}"
+                                    >
+                                        Add to cart
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+            {% if product_set.has_other_pages %}
+                <div class="pagination">
+                    <span class="link-steps">
+                    {% if product_set.has_previous %}
+                        <a href="?page=1">&laquo; 1</a>
+                        <a href="?page={{ product_set.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                        <span class="current_page">
+                            Page {{ product_set.number }} of {{ product_set.paginator.num_pages }}
+                        </span>
+
+                    {% if product_set.has_next %}
+                        <a href="?page={{ product_set.next_page_number }}">next</a>
+                        <a href="?page={{ product_set.paginator.num_pages }}">
+                            {{ product_set.paginator.num_pages }} &raquo;
+                        </a>
+                    {% endif %}
+                    </span>
+                </div>
+            {% endif %}
+    {% endif %}
+{% endblock %}
+</body>
+</html>

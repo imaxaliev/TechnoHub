@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends 'store/base.html' %}
+</head>
+<body>
+    {% block content %}
+        <div class="text-align-c">
+            <h4>Order <strong>E-{{ order.id }}</strong> has been accepted for processing.</h4>
+            <h5><strong>Detailed info</strong></h5>
+            <ul>
+                <li>
+                    <ul>
+                        <li>Product list:</li>
+                        <li>{{ order.products.all }}</li>
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        <li>Payment status:</li>
+                        <li>{{ order.payment_status }}</li>
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        <li>Obtaining method:</li>
+                        <li>{{ order.shipping_method }}</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% endblock %}
+</body>
+</html>

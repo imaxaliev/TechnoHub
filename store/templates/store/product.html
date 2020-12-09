@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends 'store/base.html' %}
+    {% load thumbnail store_extras %}
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    <div class="product-wrap">
+        <ul class="product-wrap__breadcrumbs">
+            <li><a href="{% url 'store:home' %}">Home</a></li>
+        {% for name,path in breadcrumbs %}
+            <li><a href="{% url 'store:category' path %}">{{ name }}</a></li>
+        {% endfor %}
+        </ul>
+        <div class="product-wrap__columns columns">
+            <h3>Product description</h3>
+            <div class="columns__col product-col col">
+                <div class="col__container card_single card">
+                    <div class="card__card-left">
+                        <h4>{{ product.title|capfirst }}</h4>
+                        <div class="card__thumbnail">
+                        {% for img in product.productimage_set.all %}
+                        {% if img|default_img %}
+                        {% thumbnail img.image '250' crop='center' as im %}
+                            <div class="thumbnail__main">
+                                <img src="{{ im.url }}"
+                                     width="{{ im.x }}"
+                                     height="{{ im.y }}"
+                                     alt="{{ product.slug }}"
+                                >
+                            </div>
+                        {% endthumbnail %}
+                        {% else %}
+                        {% thumbnail img.image '100' crop='center' as im %}
+                            <img src="{{ im.url }}"
+                                 width="{{ im.x }}"
+                                 height="{{ im.y }}"
+                                 alt="{{ product.slug }}"
+                                 class="thumbnail__rest"
+                            >
+                        {% endthumbnail %}
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card__card-right">
+                        <div
+                            id="addProduct{{ product.id }}ToCart"
+                            class="card__add-to-cart add-to-cart"
+                        >
+                            {% if product.total_amount == 0 %}
+                                <p class="out-of-stock">Out of stock.</p>
+                            {% else %}
+                                <div class="input-field">
+                                    <input
+                                        type="number"
+                                        id="product{{ product.id }}Amount"
+                                        class="add-to-cart__product-amount"
+                                        value="1"
+                                        min="1"
+                                        max="{{ product.total_amount }}"
+                                    >
+                                </div>
+                                <button
+                                    class="add-to-cart__btn btn waves-effect waves-light"
+                                    data-product-id="{{ product.id }}"
+                                    data-order-id="{{ actual_order.id }}"
+                                >
+                                    Add to cart
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="button-list-wrapper">
+                    <button
+                        class="toggle-tab-data btn"
+                        id="show-review-list"
+                        type="button"
+                    >
+                        Reviews
+                    </button>
+                    <button
+                        class="toggle-tab-data btn"
+                        id="show-product-params"
+                        type="button"
+                    >
+                        Product parameters
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-data">
+        <ul class="review-list">
+            {% if not product.review_set.all|length %}
+                <li><p>
+                    <strong>No reviews yet.</strong>
+                </p></li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+
+                <a
+                    href="#review-modal"
+                    class="modal-trigger btn waves-effect waves-green active"
+                >
+                    Create review
+                </a>
+                <div id="review-modal" class="modal text-align-c">
+                    <div class="modal-content">
+                        <h4 class="modal__heading">Review form</h4>
+                        <form
+                        action="{% url 'store:create_review' product.id %}"
+                        method="post"
+                        class="form modal__form review-form"
+                        data-product-id="{{ product.id }}"
+                    >
+                        {% csrf_token %}
+                        {% for field in review_form %}
+                            <div class="review-form__fields-wrap">
+                                    <label for="{{ field.id_for_label }}">
+                                        <span class="fields-wrap__field-lbl">{{ field.label }}</span>
+                                        {% if field.id_for_label == 'id_rate_0' %}
+                                            <ul class="choices-list">
+                                                {% for choice in field.field.choices %}
+                                                    <li class="choices-list__choice">
+                                                        <label for="id_for_rate_{{ forloop.counter0 }}">
+                                                            <input
+                                                                type="radio"
+                                                                id="id_for_rate_{{ forloop.counter0 }}"
+                                                                name="rate"
+                                                                value="{{ choice.0 }}"
+                                                            >
+                                                            <span>{{ choice.1 }}</span>
+                                                        </label>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            {{ field }}
+                                        {% endif %}
+                                    </label>
+                                </div>
+                        {% endfor %}
+                        <button
+                            class="modal__submit btn btn-flat"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                    </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-align-c">
+                    <p>To create a review please sign in. </p>
+                    <a href="{% url 'login' %}?next={{ request.path }}">
+                        Sign in
+                    </a>
+                </div>
+            {% endif %}
+            {% for review in product.review_set.all %}
+                <li class="review">
+                    <ul class="review__container">
+                        <li>
+                            <ul class="review__details">
+                                <li class="review__author">
+                                    <p>{{ review.author }}</p>
+                                </li>
+                                <li class="review__rate">
+                                    <p>{{ review.rate }}</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="review__text">
+                            <p>{{ review.text }}</p>
+                        </li>
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="card__params-wrap">
+            {% if product.params.all|length > 0 %}
+                <h4>Product parameters</h4>
+                <ul class="card__product-params product-params">
+            {% if product.params.tech_params %}
+                <li>
+                    <h5>Technical details</h5>
+                    <ul class="product-params__param">
+                    {% for field, value in product.params.tech_params %}
+                        <li>{{ field|capfirst }}:</li>
+                        <h6>{{ value }}</h6>
+                    {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+            {% if product.params.appearance_params %}
+                <li>
+                    <h5>Appearance details</h5>
+                    <ul>
+                    {% for field, value in product.params.appearance_params %}
+                        <li>{{ field|capfirst }}:</li>
+                        <h6>{{ value }}</h6>
+                    {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+            </ul>
+            {% else %}
+                <p><strong>No params available.</strong></p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>
