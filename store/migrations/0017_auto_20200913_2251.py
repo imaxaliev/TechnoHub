@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('store', '0016_order_custom_id'),
+        ('store', '0015_auto_20200913_1753.py'),
     ]
 
     operations = [
@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='shipping_method',
             field=models.CharField(choices=[('Pickup', 'Pickup'), ('City courier delivery', 'City Courier Delivery'), ('Boxberry', 'Boxberry')], default='Pickup', max_length=30),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='order',
             name='custom_id',
             field=models.PositiveIntegerField(blank=True, default=None, editable=False, null=True),
