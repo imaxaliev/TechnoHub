@@ -140,15 +140,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # compressor
 
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = os.environ.get('DJ_COMPRESS_ON', '') == 'True'
 
 COMPRESS_PRECOMPILERS = (
     ('text/less', r'lessc {infile} {outfile}'),
 )
 
-COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE = os.environ.get('DJ_COMPRESS_OFFLINE', '') == 'True'
 
-COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_ROOT = 'static'
 
 # media
 
