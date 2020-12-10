@@ -1,8 +1,11 @@
 .idea
-node_modules
 
 __init__
 __pycache__
+
+node_modules
+
+env/**/node_modules
 
 *.sqlite3
 *.bat
