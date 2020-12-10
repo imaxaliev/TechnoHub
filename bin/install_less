@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -eo pipefail
-
-npm config set registry 'http://registry.npmjs.org'
-npm install -g less
