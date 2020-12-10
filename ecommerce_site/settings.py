@@ -145,6 +145,8 @@ COMPRESS_PRECOMPILERS = (
 
 COMPRESS_OFFLINE = os.environ.get('DJANGO_COMPRESS_OFFLINE', 'True') == 'False'
 
+COMPRESS_ROOT = 'static'
+
 # media
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
