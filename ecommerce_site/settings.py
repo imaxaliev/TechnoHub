@@ -148,7 +148,7 @@ COMPRESS_PRECOMPILERS = (
 
 COMPRESS_OFFLINE = os.environ.get('DJ_COMPRESS_OFFLINE', '') == 'True'
 
-COMPRESS_ROOT = 'staticfiles'
+COMPRESS_ROOT = STATIC_ROOT
 
 # media
 
