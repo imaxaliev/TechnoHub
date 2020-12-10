@@ -137,13 +137,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # compressor
 
-COMPRESS_ENABLED = os.environ.get('DJANGO_COMPRESS_ENABLED', 'True') == 'False'
+COMPRESS_ENABLED = True
 
 COMPRESS_PRECOMPILERS = (
     ('text/less', r'lessc {infile} {outfile}'),
 )
 
-COMPRESS_OFFLINE = os.environ.get('DJANGO_COMPRESS_OFFLINE', 'True') == 'False'
+COMPRESS_OFFLINE = True
 
 COMPRESS_ROOT = 'static'
 
