@@ -10,4 +10,5 @@ env/**/node_modules
 *.sqlite3
 *.bat
 
-migrations
+*lock.json
+
