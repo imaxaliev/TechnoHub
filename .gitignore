@@ -11,6 +11,4 @@ env/**/node_modules
 *.bat
 *.json
 
-CACHE
-cache
 migrations
