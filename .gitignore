@@ -14,5 +14,3 @@ env/**/node_modules
 CACHE
 cache
 migrations
-
-bin

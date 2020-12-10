@@ -25,8 +25,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!lm70mphjh2-k6g4moq#_(19hjc80_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'https://fierce-caverns-46536.herokuapp.com/',
+    '127.0.0.1',
+    'localhost'
+]
 
 
 # Application definition
@@ -137,15 +140,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # compressor
 
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = os.environ.get('DJ_COMPRESS_ON', None) == 'True'
 
 COMPRESS_PRECOMPILERS = (
     ('text/less', r'lessc {infile} {outfile}'),
 )
 
-COMPRESS_OFFLINE = True
-
-COMPRESS_ROOT = 'static'
+COMPRESS_OFFLINE = os.environ.get('DJ_COMPRESS_OFFLINE', None) == 'True'
 
 # media
 
