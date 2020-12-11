@@ -85,8 +85,12 @@ WSGI_APPLICATION = 'ecommerce_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'technohub',
+        'USER': os.environ.get('DJ_DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DJ_DB_PWD', 'postgres'),
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -140,13 +144,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # compressor
 
-COMPRESS_ENABLED = os.environ.get('DJ_COMPRESS_ENABLED', None) == 'True'
+COMPRESS_ENABLED = True
 
 COMPRESS_PRECOMPILERS = (
     ('text/less', r'lessc {infile} {outfile}'),
 )
 
-COMPRESS_OFFLINE = os.environ.get('DJ_COMPRESS_OFFLINE', None) == 'True'
+if os.environ.get('DJ_COMPRESS_OFFLINE'):
+    COMPRESS_OFFLINE = True
 
 COMPRESS_ROOT = 'staticfiles'
 
