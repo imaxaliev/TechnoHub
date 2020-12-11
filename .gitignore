@@ -15,4 +15,7 @@ env/**/node_modules
 Procfile
 
 staticfiles/admin
+staticfiles/store
+staticfiles/*.json
+
 cache
