@@ -6,12 +6,20 @@
     <title>Title</title>
 </head>
 <body>
-    {% block cart %}{% endblock %}
     {% block content %}
-    <form method="post" class="order-deletion__form">
+    <form
+        action="{% url 'store:order_deletion' order.id %}?success_url={{ request.GET.next }}"
+        method="post"
+        class="order-deletion__form"
+    >
         {% csrf_token %}
         <p>Are you sure you want to decline order?</p>
-        <input type="submit" value="Decline order">
+        <button
+            type="submit"
+            class="btn waves-effect waves-light"
+        >
+            Decline order
+        </button>
     </form>
     {% endblock %}
 </body>

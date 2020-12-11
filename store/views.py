@@ -246,6 +246,11 @@ class OrderDeletion(UserPassesTestMixin, generic.DeleteView):
         self.login_url = next_param if next_param else reverse('store:home')
         return self.login_url
 
+    def get_success_url(self):
+        if self.request.GET.get('success_url'):
+            return self.request.GET.get('success_url')
+        return reverse('store:home')
+
 
 def find_path(rq):
     q = rq.GET.get('q', None)

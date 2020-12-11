@@ -7,7 +7,7 @@ export function addProductToCart(e) {
         .then((res) => res.json())
         .then((data) => {
             if (data.productTitle) {
-                const orderDetailWrap = document.querySelector('.cart-wrap__container')
+                const orderDetailWrap = document.querySelector('.cart__container')
                 let orderDetail = document.querySelector('.container__order-detail')
 
                 if (!orderDetail) {
@@ -31,7 +31,7 @@ export function addProductToCart(e) {
                             </a>
                         </div>
                         <a
-                            href="/store/orders/${orderId}/delete/"
+                            href="/store/orders/${orderId}/delete/?next=${location.pathname}"
                             class="deletion-link"
                         >
                             Decline order
